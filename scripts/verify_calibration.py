@@ -23,7 +23,7 @@ class CalibrationVerifier(Node):
         self.corrected_imu = []
         self.camera_image = None
         self.camera_info = None
-        self.subscriptions = [
+        self._subscriptions = [
             self.create_subscription(PointCloud2, "/mid360/points", self.set_raw_lidar, qos_profile_sensor_data),
             self.create_subscription(PointCloud2, "/perception/lidar/points", self.set_calibrated_lidar, qos_profile_sensor_data),
             self.create_subscription(Imu, "/vendor/imu/data_raw", self.set_raw_imu, qos_profile_sensor_data),

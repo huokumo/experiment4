@@ -75,6 +75,11 @@ class PackageStaticTest(unittest.TestCase):
                 if "rclpy.init" in source:
                     self.assertIn("rclpy.try_shutdown()", source)
 
+    def test_verifier_does_not_shadow_node_subscription_property(self):
+        source = (PACKAGE / "scripts" / "verify_calibration.py").read_text(encoding="utf-8")
+        self.assertIn("self._subscriptions", source)
+        self.assertNotIn("self.subscriptions =", source)
+
 
 if __name__ == "__main__":
     unittest.main()
