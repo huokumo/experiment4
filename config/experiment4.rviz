@@ -1,0 +1,118 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Alpha: 0.5
+      Cell Size: 1
+      Plane: XY
+      Plane Cell Count: 10
+      Color: 160; 160; 164
+      Value: true
+    - Class: rviz_default_plugins/RobotModel
+      Name: RobotModel
+      Enabled: true
+      Description Source: Topic
+      Description Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot_description
+      Visual Enabled: true
+      Collision Enabled: false
+      Alpha: 1
+      Value: true
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: true
+      Frame Timeout: 15
+      Marker Scale: 0.5
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Update Interval: 0
+      Value: true
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Raw lidar reference
+      Enabled: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /mid360/points
+      Color Transformer: FlatColor
+      Color: 0; 255; 90
+      Position Transformer: XYZ
+      Size (Pixels): 2
+      Style: Squares
+      Decay Time: 0
+      Alpha: 0.65
+      Value: true
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Calibrated lidar result
+      Enabled: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /perception/lidar/points
+      Color Transformer: FlatColor
+      Color: 255; 55; 35
+      Position Transformer: XYZ
+      Size (Pixels): 3
+      Style: Squares
+      Decay Time: 0
+      Alpha: 0.75
+      Value: true
+    - Class: rviz_default_plugins/Image
+      Name: Standard camera image
+      Enabled: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+        Value: /perception/camera/image_raw
+      Normalize Range: true
+      Min Value: 0
+      Max Value: 1
+      Median window: 5
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 42; 42; 46
+    Fixed Frame: base_link
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 11
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0.5
+      Pitch: 0.45
+      Yaw: 5.5
+      Target Frame: base_link
+      Value: Orbit (rviz)
+    Saved: ~

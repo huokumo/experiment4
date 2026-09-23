@@ -1,0 +1,29 @@
+lidar_cloud_relay:
+  ros__parameters:
+    input_topic: /mid360/points
+    output_topic: /perception/lidar/points
+    parent_frame: base_link
+    calibrated_frame: mid360_calibrated
+    xyz: [0.05, 0.00, 0.73]
+    rpy: [0.00, 0.00, 0.12]
+
+imu_fault_injector:
+  ros__parameters:
+    input_topic: /imu/data
+    output_topic: /vendor/imu/data_raw
+    angular_velocity_bias: [0.004, -0.006, 0.030]
+    linear_acceleration_bias: [0.080, -0.020, 0.050]
+
+imu_bias_corrector:
+  ros__parameters:
+    input_topic: /vendor/imu/data_raw
+    output_topic: /perception/imu/data
+    angular_velocity_bias: [0.000, 0.000, 0.000]
+    linear_acceleration_bias: [0.000, 0.000, 0.000]
+
+camera_interface_adapter:
+  ros__parameters:
+    image_input: /wrong/image
+    image_output: /perception/camera/image_raw
+    info_input: /wrong/info
+    info_output: /perception/camera/camera_info

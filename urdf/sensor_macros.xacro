@@ -1,0 +1,215 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:macro name="install_camera"
+               params="parent frame optical_frame xyz rpy image_topic info_topic update_rate">
+    <link name="${frame}">
+      <visual>
+        <geometry><box size="0.14 0.10 0.08"/></geometry>
+        <material name="camera_black"><color rgba="0.025 0.03 0.035 1"/></material>
+      </visual>
+      <collision>
+        <geometry><box size="0.14 0.10 0.08"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="0.10"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0"
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+    </link>
+    <joint name="${frame}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${frame}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+    <gazebo reference="${frame}"><material>Gazebo/Black</material></gazebo>
+    <xacro:fixed_box_visual
+      name="${frame}_face_link" parent="${frame}"
+      xyz="0.076 0 0" rpy="0 0 0" size="0.015 0.09 0.07"
+      gazebo_material="Gazebo/Grey" rgba="0.32 0.38 0.44 1"/>
+    <xacro:fixed_cylinder_visual
+      name="${frame}_lens_link" parent="${frame}"
+      xyz="0.095 0 0" rpy="0 1.57079632679 0"
+      radius="0.032" length="0.04"
+      gazebo_material="Gazebo/Blue" rgba="0.03 0.35 0.68 1"/>
+    <xacro:fixed_box_visual
+      name="${frame}_bracket_link" parent="${frame}"
+      xyz="-0.035 0 -0.075" rpy="0 0 0" size="0.035 0.08 0.08"
+      gazebo_material="Gazebo/Grey" rgba="0.32 0.38 0.44 1"/>
+
+    <!-- A dedicated link preserves the lens offset during URDF-to-SDF fixed-joint reduction. -->
+    <link name="${frame}_sensor_link"/>
+    <joint name="${frame}_sensor_joint" type="fixed">
+      <parent link="${frame}"/>
+      <child link="${frame}_sensor_link"/>
+      <origin xyz="0.13 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${optical_frame}"/>
+    <joint name="${optical_frame}_joint" type="fixed">
+      <parent link="${frame}_sensor_link"/>
+      <child link="${optical_frame}"/>
+      <origin xyz="0 0 0" rpy="-1.57079632679 0 -1.57079632679"/>
+    </joint>
+
+    <gazebo reference="${frame}_sensor_link">
+      <sensor name="camera_sensor" type="camera">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>${update_rate}</update_rate>
+        <camera name="camera_optical">
+          <horizontal_fov>1.0472</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>240</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>20.0</far>
+          </clip>
+        </camera>
+        <plugin name="camera_ros" filename="libgazebo_ros_camera.so">
+          <ros>
+            <namespace>/</namespace>
+            <remapping>camera/image_raw:=${image_topic}</remapping>
+            <remapping>camera/camera_info:=${info_topic}</remapping>
+          </ros>
+          <camera_name>camera</camera_name>
+          <frame_name>${optical_frame}</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="install_lidar"
+               params="parent frame xyz rpy topic update_rate">
+    <link name="${frame}">
+      <visual>
+        <geometry><cylinder radius="0.08" length="0.11"/></geometry>
+        <material name="lidar_black"><color rgba="0.025 0.03 0.035 1"/></material>
+      </visual>
+      <collision>
+        <geometry><cylinder radius="0.08" length="0.11"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="0.25"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0"
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+    </link>
+    <joint name="${frame}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${frame}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+    <gazebo reference="${frame}"><material>Gazebo/Black</material></gazebo>
+    <xacro:fixed_cylinder_visual
+      name="${frame}_scan_band_link" parent="${frame}"
+      xyz="0 0 0" rpy="0 0 0" radius="0.084" length="0.045"
+      gazebo_material="Gazebo/Blue" rgba="0.03 0.35 0.68 1"/>
+    <xacro:fixed_cylinder_visual
+      name="${frame}_cap_link" parent="${frame}"
+      xyz="0 0 0.065" rpy="0 0 0" radius="0.065" length="0.025"
+      gazebo_material="Gazebo/Grey" rgba="0.32 0.38 0.44 1"/>
+    <xacro:fixed_cylinder_visual
+      name="${frame}_mount_link" parent="${frame}"
+      xyz="0 0 -0.095" rpy="0 0 0" radius="0.045" length="0.08"
+      gazebo_material="Gazebo/Grey" rgba="0.32 0.38 0.44 1"/>
+
+    <gazebo reference="${frame}">
+      <sensor name="mid360_lidar" type="ray">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>${update_rate}</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>240</samples>
+              <resolution>1.0</resolution>
+              <min_angle>-3.14159265359</min_angle>
+              <max_angle>3.14159265359</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>12</samples>
+              <resolution>1.0</resolution>
+              <min_angle>-0.5235987756</min_angle>
+              <max_angle>0.2617993878</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>0.10</min>
+            <max>70.0</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+        <plugin name="mid360_pointcloud" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+            <namespace>/</namespace>
+            <remapping>~/out:=${topic}</remapping>
+          </ros>
+          <output_type>sensor_msgs/PointCloud2</output_type>
+          <frame_name>${frame}</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="install_imu"
+               params="parent frame xyz rpy topic update_rate">
+    <link name="${frame}">
+      <visual>
+        <geometry><box size="0.12 0.09 0.04"/></geometry>
+        <material name="imu_black"><color rgba="0.025 0.03 0.035 1"/></material>
+      </visual>
+      <collision>
+        <geometry><box size="0.12 0.09 0.04"/></geometry>
+      </collision>
+      <inertial>
+        <mass value="0.10"/>
+        <inertia ixx="0.0001" ixy="0" ixz="0"
+                 iyy="0.0001" iyz="0" izz="0.0001"/>
+      </inertial>
+    </link>
+    <joint name="${frame}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${frame}"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+    <gazebo reference="${frame}"><material>Gazebo/Black</material></gazebo>
+    <xacro:fixed_box_visual
+      name="${frame}_top_link" parent="${frame}"
+      xyz="0 0 0.023" rpy="0 0 0" size="0.10 0.07 0.008"
+      gazebo_material="Gazebo/Grey" rgba="0.32 0.38 0.44 1"/>
+    <xacro:fixed_box_visual
+      name="${frame}_forward_marker_link" parent="${frame}"
+      xyz="0.045 0 0.031" rpy="0 0 0" size="0.045 0.012 0.009"
+      gazebo_material="Gazebo/Red" rgba="0.90 0.05 0.05 1"/>
+
+    <gazebo reference="${frame}">
+      <sensor name="imu_sensor" type="imu">
+        <always_on>true</always_on>
+        <visualize>false</visualize>
+        <update_rate>${update_rate}</update_rate>
+        <imu>
+          <angular_velocity>
+            <x><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0.0</mean><stddev>0.001</stddev></noise></z>
+          </angular_velocity>
+          <linear_acceleration>
+            <x><noise type="gaussian"><mean>0.0</mean><stddev>0.01</stddev></noise></x>
+            <y><noise type="gaussian"><mean>0.0</mean><stddev>0.01</stddev></noise></y>
+            <z><noise type="gaussian"><mean>0.0</mean><stddev>0.01</stddev></noise></z>
+          </linear_acceleration>
+        </imu>
+        <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+          <ros>
+            <namespace>/</namespace>
+            <remapping>~/out:=${topic}</remapping>
+          </ros>
+          <frame_name>${frame}</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

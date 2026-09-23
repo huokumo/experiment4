@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="gazebo_diffbot">
+  <xacro:include filename="robot_base_macro.xacro"/>
+  <xacro:include filename="sensor_macros.xacro"/>
+
+  <xacro:differential_robot_base/>
+
+  <!-- Experiment 4 keeps the Experiment 3 mounting geometry unchanged. -->
+  <xacro:install_camera
+    parent="base_link"
+    frame="camera_link"
+    optical_frame="camera_optical_frame"
+    xyz="0.38 0 0.68"
+    rpy="0 0 0"
+    image_topic="/vendor_camera/color"
+    info_topic="/vendor_camera/info"
+    update_rate="10.0"/>
+
+  <xacro:install_lidar
+    parent="base_link"
+    frame="mid360_link"
+    xyz="0 0 0.68"
+    rpy="0 0 0"
+    topic="/mid360/points"
+    update_rate="10.0"/>
+
+  <xacro:install_imu
+    parent="base_link"
+    frame="imu_link"
+    xyz="-0.28 0 0.59"
+    rpy="0 0 0"
+    topic="/imu/data"
+    update_rate="100.0"/>
+</robot>
