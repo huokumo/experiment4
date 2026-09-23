@@ -39,7 +39,7 @@ class LidarCloudRelay(Node):
         output_topic = self.get_parameter("output_topic").value
         self.calibrated_frame = self.get_parameter("calibrated_frame").value
 
-        self.publisher = self.create_publisher(PointCloud2, output_topic, qos_profile_sensor_data)
+        self.publisher = self.create_publisher(PointCloud2, output_topic, 10)
         self.subscription = self.create_subscription(
             PointCloud2, input_topic, self.relay_cloud, qos_profile_sensor_data
         )

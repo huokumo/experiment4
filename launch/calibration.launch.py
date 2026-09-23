@@ -2,7 +2,7 @@ from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration
@@ -24,6 +24,7 @@ def generate_launch_description():
     common_parameters = [config_file, {"use_sim_time": True}]
 
     return LaunchDescription([
+        SetEnvironmentVariable("GAZEBO_MASTER_URI", "http://127.0.0.1:11346"),
         DeclareLaunchArgument(
             "config_file",
             default_value=str(package_dir / "config" / "sensor_calibration.yaml"),
@@ -44,7 +45,7 @@ def generate_launch_description():
             package="gazebo_ros",
             executable="spawn_entity.py",
             name="spawn_diffbot",
-            arguments=["-topic", "robot_description", "-entity", "diffbot", "-x", "0", "-y", "0", "-z", "0.15"],
+            arguments=["-topic", "robot_description", "-entity", "exp4_diffbot", "-x", "0", "-y", "0", "-z", "0.15"],
             output="screen",
         ),
         Node(package="experiment4", executable="lidar_cloud_relay", name="lidar_cloud_relay", parameters=common_parameters),

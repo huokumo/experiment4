@@ -19,8 +19,8 @@ class CameraInterfaceAdapter(Node):
         info_input = self.get_parameter("info_input").value
         info_output = self.get_parameter("info_output").value
 
-        self.image_publisher = self.create_publisher(Image, image_output, qos_profile_sensor_data)
-        self.info_publisher = self.create_publisher(CameraInfo, info_output, qos_profile_sensor_data)
+        self.image_publisher = self.create_publisher(Image, image_output, 10)
+        self.info_publisher = self.create_publisher(CameraInfo, info_output, 10)
         self.image_subscription = self.create_subscription(
             Image, image_input, self.image_publisher.publish, qos_profile_sensor_data
         )

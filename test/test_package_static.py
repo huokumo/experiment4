@@ -58,6 +58,15 @@ class PackageStaticTest(unittest.TestCase):
         self.assertIn("console_scripts", setup)
         self.assertIn("lidar_cloud_relay = experiment4.entrypoints:lidar_cloud_relay", setup)
 
+    def test_outputs_use_reliable_qos_and_gazebo_is_isolated(self):
+        relay = (PACKAGE / "scripts" / "lidar_cloud_relay.py").read_text(encoding="utf-8")
+        camera = (PACKAGE / "scripts" / "camera_interface_adapter.py").read_text(encoding="utf-8")
+        launch = (PACKAGE / "launch" / "calibration.launch.py").read_text(encoding="utf-8")
+        self.assertIn("create_publisher(PointCloud2, output_topic, 10)", relay)
+        self.assertIn("create_publisher(Image, image_output, 10)", camera)
+        self.assertIn('SetEnvironmentVariable("GAZEBO_MASTER_URI", "http://127.0.0.1:11346")', launch)
+        self.assertIn('"exp4_diffbot"', launch)
+
 
 if __name__ == "__main__":
     unittest.main()

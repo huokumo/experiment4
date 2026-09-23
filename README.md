@@ -39,6 +39,8 @@ source install/setup.bash
 ros2 launch experiment4 calibration.launch.py
 ```
 
+实验4使用独立的 Gazebo master（端口 `11346`）和实体名 `exp4_diffbot`，可以与其他 Gazebo 教学工程隔离。每次重新启动前先在旧启动终端按 `Ctrl+C` 并等待窗口关闭；不要同时启动多个实验4仿真实例。
+
 如不需要自动打开RViz，添加：
 
 ```text
