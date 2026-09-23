@@ -63,11 +63,13 @@ config/sensor_calibration.yaml
 
 每完成一项，修改此文件，停止仿真，重新编译并用同一个命令启动。
 
-更新现有仓库后，先清除旧安装结果再重新编译，确保脚本可执行权限更新：
+更新现有仓库后，确认代码版本，再清除旧安装结果并重新编译。旧版会尝试生成名为 `diffbot` 的实体；当前版本应使用 `exp4_diffbot`：
 
 ```bash
 cd /root/exp4/experiment4_ws/src/experiment4
 git pull origin main
+git log -1 --oneline
+grep -n 'exp4_diffbot' launch/calibration.launch.py
 cd /root/exp4/experiment4_ws
 rm -rf build/experiment4 install/experiment4
 source /opt/ros/humble/setup.bash

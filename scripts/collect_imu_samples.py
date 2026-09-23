@@ -73,7 +73,7 @@ def main(args=None):
         exit_code = 130
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        rclpy.try_shutdown()
     return exit_code
 
 

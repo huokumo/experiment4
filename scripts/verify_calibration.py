@@ -171,7 +171,7 @@ def main(args=None):
         passed += report(info_ok, "standard camera info topic carries valid optical-frame data")
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        rclpy.try_shutdown()
 
     print(f"\nResult: {passed}/{total} passed")
     return 0 if passed == total else 1

@@ -67,6 +67,14 @@ class PackageStaticTest(unittest.TestCase):
         self.assertIn('SetEnvironmentVariable("GAZEBO_MASTER_URI", "http://127.0.0.1:11346")', launch)
         self.assertIn('"exp4_diffbot"', launch)
 
+    def test_ros_nodes_use_idempotent_shutdown(self):
+        for path in (PACKAGE / "scripts").glob("*.py"):
+            with self.subTest(script=path.name):
+                source = path.read_text(encoding="utf-8")
+                self.assertNotIn("rclpy.shutdown()", source)
+                if "rclpy.init" in source:
+                    self.assertIn("rclpy.try_shutdown()", source)
+
 
 if __name__ == "__main__":
     unittest.main()

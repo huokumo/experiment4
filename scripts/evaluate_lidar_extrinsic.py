@@ -87,7 +87,7 @@ def main(args=None):
         print("[PASS] lidar extrinsic meets the acceptance limits" if passed else "[FAIL] adjust xyz/rpy and restart the launch file")
     finally:
         node.destroy_node()
-        rclpy.shutdown()
+        rclpy.try_shutdown()
     return 0 if passed else 1
 
 
