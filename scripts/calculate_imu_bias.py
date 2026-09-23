@@ -43,7 +43,7 @@ def main():
     means = {field: statistics.fmean(values) for field, values in columns.items()}
     linear_z_bias = means["linear_z"] - args.expected_z
     print(f"Samples: {len(columns[FIELDS[0]])}")
-    print("Copy these values into imu_bias_corrector in sensor_calibration_student.yaml:")
+    print("Copy these values into imu_bias_corrector in config/sensor_calibration.yaml:")
     print("angular_velocity_bias: [{:.6f}, {:.6f}, {:.6f}]".format(
         means["angular_x"], means["angular_y"], means["angular_z"]
     ))

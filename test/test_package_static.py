@@ -80,6 +80,11 @@ class PackageStaticTest(unittest.TestCase):
         self.assertIn("self._subscriptions", source)
         self.assertNotIn("self.subscriptions =", source)
 
+    def test_user_facing_imu_instruction_uses_single_configuration_file(self):
+        source = (PACKAGE / "scripts" / "calculate_imu_bias.py").read_text(encoding="utf-8")
+        self.assertIn("config/sensor_calibration.yaml", source)
+        self.assertNotIn("sensor_calibration_student.yaml", source)
+
 
 if __name__ == "__main__":
     unittest.main()
