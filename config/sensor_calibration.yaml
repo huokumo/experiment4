@@ -1,3 +1,4 @@
+# Single working configuration. Resolve each section in order: lidar, IMU, camera.
 lidar_cloud_relay:
   ros__parameters:
     input_topic: /mid360/points

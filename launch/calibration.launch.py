@@ -26,7 +26,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             "config_file",
-            default_value=str(package_dir / "config" / "sensor_calibration_student.yaml"),
+            default_value=str(package_dir / "config" / "sensor_calibration.yaml"),
         ),
         DeclareLaunchArgument("rviz", default_value="true"),
         IncludeLaunchDescription(
@@ -47,10 +47,10 @@ def generate_launch_description():
             arguments=["-topic", "robot_description", "-entity", "diffbot", "-x", "0", "-y", "0", "-z", "0.15"],
             output="screen",
         ),
-        Node(package="experiment4", executable="lidar_cloud_relay.py", name="lidar_cloud_relay", parameters=common_parameters),
-        Node(package="experiment4", executable="imu_fault_injector.py", name="imu_fault_injector", parameters=common_parameters),
-        Node(package="experiment4", executable="imu_bias_corrector.py", name="imu_bias_corrector", parameters=common_parameters),
-        Node(package="experiment4", executable="camera_interface_adapter.py", name="camera_interface_adapter", parameters=common_parameters),
+        Node(package="experiment4", executable="lidar_cloud_relay", name="lidar_cloud_relay", parameters=common_parameters),
+        Node(package="experiment4", executable="imu_fault_injector", name="imu_fault_injector", parameters=common_parameters),
+        Node(package="experiment4", executable="imu_bias_corrector", name="imu_bias_corrector", parameters=common_parameters),
+        Node(package="experiment4", executable="camera_interface_adapter", name="camera_interface_adapter", parameters=common_parameters),
         Node(
             package="rviz2",
             executable="rviz2",
