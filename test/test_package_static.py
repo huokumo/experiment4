@@ -109,6 +109,9 @@ class PackageStaticTest(unittest.TestCase):
             "/perception/camera/image_raw",
             image_topics["Standard camera image"],
         )
+        panel_classes = {panel["Class"] for panel in data["Panels"]}
+        self.assertIn("rviz_common/Displays", panel_classes)
+        self.assertNotIn("rviz_common/Views", panel_classes)
 
 
 if __name__ == "__main__":
