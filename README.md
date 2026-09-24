@@ -53,6 +53,13 @@ Current result: 3 issue(s) remaining
 ros2 run experiment4 diagnose_calibration
 ```
 
+RViz启动后会自动加载两个左侧图像面板：
+
+- `Vendor camera image (raw)`订阅`/vendor_camera/color`，初始状态就应显示图像，证明相机设备工作正常；
+- `Standard camera image`订阅`/perception/camera/image_raw`，初始状态没有图像，完成相机接口适配后才应显示图像。
+
+不要手动把标准图像面板改成原始设备话题，否则会绕过本实验的接口适配任务。
+
 如不需要自动打开RViz，添加：
 
 ```text

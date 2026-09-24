@@ -95,6 +95,21 @@ class PackageStaticTest(unittest.TestCase):
         self.assertIn('executable="diagnose_calibration"', launch)
         self.assertIn("diagnose_calibration = experiment4.entrypoints:diagnose_calibration", setup)
 
+    def test_rviz_preloads_raw_and_standard_camera_views(self):
+        path = PACKAGE / "config" / "experiment4.rviz"
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        displays = data["Visualization Manager"]["Displays"]
+        image_topics = {
+            display["Name"]: display["Topic"]["Value"]
+            for display in displays
+            if display.get("Class") == "rviz_default_plugins/Image"
+        }
+        self.assertEqual("/vendor_camera/color", image_topics["Vendor camera image (raw)"])
+        self.assertEqual(
+            "/perception/camera/image_raw",
+            image_topics["Standard camera image"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
