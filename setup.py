@@ -28,6 +28,7 @@ setup(
             "calculate_imu_bias = experiment4.entrypoints:calculate_imu_bias",
             "camera_interface_adapter = experiment4.entrypoints:camera_interface_adapter",
             "collect_imu_samples = experiment4.entrypoints:collect_imu_samples",
+            "diagnose_calibration = experiment4.entrypoints:diagnose_calibration",
             "evaluate_lidar_extrinsic = experiment4.entrypoints:evaluate_lidar_extrinsic",
             "imu_bias_corrector = experiment4.entrypoints:imu_bias_corrector",
             "imu_fault_injector = experiment4.entrypoints:imu_fault_injector",

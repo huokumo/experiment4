@@ -41,6 +41,18 @@ ros2 launch experiment4 calibration.launch.py
 
 实验4使用独立的 Gazebo master（端口 `11346`）和实体名 `exp4_diffbot`，可以与其他 Gazebo 教学工程隔离。每次重新启动前先在旧启动终端按 `Ctrl+C` 并等待窗口关闭；不要同时启动多个实验4仿真实例。
 
+启动约15秒后，终端会自动输出一次当前校准诊断。初始配置应显示雷达、IMU和相机三个 `[ISSUE]`，并显示：
+
+```text
+Current result: 3 issue(s) remaining
+```
+
+也可在另一个已加载工作空间环境的终端手动复查：
+
+```bash
+ros2 run experiment4 diagnose_calibration
+```
+
 如不需要自动打开RViz，添加：
 
 ```text

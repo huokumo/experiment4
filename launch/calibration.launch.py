@@ -2,7 +2,7 @@ from pathlib import Path
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, SetEnvironmentVariable, TimerAction
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import Command, LaunchConfiguration
@@ -52,6 +52,17 @@ def generate_launch_description():
         Node(package="experiment4", executable="imu_fault_injector", name="imu_fault_injector", parameters=common_parameters),
         Node(package="experiment4", executable="imu_bias_corrector", name="imu_bias_corrector", parameters=common_parameters),
         Node(package="experiment4", executable="camera_interface_adapter", name="camera_interface_adapter", parameters=common_parameters),
+        TimerAction(
+            period=7.0,
+            actions=[
+                Node(
+                    package="experiment4",
+                    executable="diagnose_calibration",
+                    name="startup_calibration_diagnostics",
+                    output="screen",
+                )
+            ],
+        ),
         Node(
             package="rviz2",
             executable="rviz2",

@@ -21,6 +21,10 @@ def collect_imu_samples():
     return run_script("collect_imu_samples")
 
 
+def diagnose_calibration():
+    return run_script("diagnose_calibration")
+
+
 def evaluate_lidar_extrinsic():
     return run_script("evaluate_lidar_extrinsic")
 

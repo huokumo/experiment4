@@ -85,6 +85,16 @@ class PackageStaticTest(unittest.TestCase):
         self.assertIn("config/sensor_calibration.yaml", source)
         self.assertNotIn("sensor_calibration_student.yaml", source)
 
+    def test_startup_diagnostics_cover_all_three_calibration_outputs(self):
+        source = (PACKAGE / "scripts" / "diagnose_calibration.py").read_text(encoding="utf-8")
+        launch = (PACKAGE / "launch" / "calibration.launch.py").read_text(encoding="utf-8")
+        setup = (PACKAGE / "setup.py").read_text(encoding="utf-8")
+        self.assertIn('"/perception/lidar/points"', source)
+        self.assertIn('"/perception/imu/data"', source)
+        self.assertIn('"/perception/camera/image_raw"', source)
+        self.assertIn('executable="diagnose_calibration"', launch)
+        self.assertIn("diagnose_calibration = experiment4.entrypoints:diagnose_calibration", setup)
+
 
 if __name__ == "__main__":
     unittest.main()
